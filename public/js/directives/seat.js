@@ -35,6 +35,18 @@ app.directive( 'seat', [function() {
 				}
 			}
 
+			scope.getCardDescription = function( seat, card ) {
+				if( scope.mySeat === seat ) {
+					return (scope.myCards[card] || '').toUpperCase().replace('CARD-', '').replace('T', '10').replace('C', '♣').replace('H', '♥').replace('S', '♠').replace('D', '♦');
+				}
+				else if ( typeof scope.player !== 'undefined' && scope.player && scope.player.cards && scope.player.cards[card] ) {
+					return (scope.player.cards[card] || '').toUpperCase().replace('CARD-', '').replace('T', '10').replace('C', '♣').replace('H', '♥').replace('S', '♠').replace('D', '♦');
+				}
+				else {
+					return '';
+				}
+			}
+
 			scope.seatOccupied = function( seat ) {
 				return !scope.sittingOnTable || ( typeof scope.player !== 'undefinde' && scope.player && scope.player.name );
 			}
