@@ -358,7 +358,7 @@ Table.prototype.actionToNextPlayer = function() {
 		case 'flop':
 		case 'turn':
 		case 'river':
-			// If someone has betted
+			// If someone has bet
 			if( this.public.biggestBet ) {
 				if( this.otherPlayersAreAllIn() ) {
 					this.seats[this.public.activeSeat].socket.emit( 'actOthersAllIn' );
@@ -385,17 +385,19 @@ Table.prototype.showdown = function() {
 
 	for( var i=0 ; i<this.playersInHandCount ; i++ ) {
 		this.seats[currentPlayer].evaluateHand( this.public.board );
+
 		// If the hand of the current player is the best one yet,
 		// he has to show it to the others in order to prove it
 		if( this.seats[currentPlayer].evaluatedHand.rating > bestHandRating ) {
 			this.seats[currentPlayer].public.cards = this.seats[currentPlayer].cards;
 		}
+
 		currentPlayer = this.findNextPlayer( currentPlayer );
 	}
 	
 	var messages = this.pot.destributeToWinners( this.seats, currentPlayer );
-
 	var messagesCount = messages.length;
+
 	for( var i=0 ; i<messagesCount ; i++ ) {
 		this.log({
 			message: messages[i],
@@ -407,9 +409,10 @@ Table.prototype.showdown = function() {
 	}
 
 	var that = this;
+
 	setTimeout( function(){
 		that.endRound();
-	}, 2000 );
+	}, 5000 );
 };
 
 /**
@@ -479,6 +482,7 @@ Table.prototype.playerFolded = function() {
 
 	this.playersInHandCount--;
 	this.pot.removePlayer( this.public.activeSeat );
+
 	if( this.playersInHandCount <= 1 ) {
 		this.pot.addTableBets( this.seats );
 		var winnersSeat = this.findNextPlayer();
@@ -544,7 +548,7 @@ Table.prototype.playerBetted = function( amount ) {
 	this.public.biggestBet = this.public.biggestBet < this.seats[this.public.activeSeat].public.bet ? this.seats[this.public.activeSeat].public.bet : this.public.biggestBet;
 
 	this.log({
-		message: this.seats[this.public.activeSeat].public.name + ' betted ' + amount,
+		message: this.seats[this.public.activeSeat].public.name + ' bet ' + amount,
 		action: 'bet',
 		seat: this.public.activeSeat,
 		notification: 'Bet ' + amount
@@ -553,6 +557,7 @@ Table.prototype.playerBetted = function( amount ) {
 	this.emitEvent( 'table-data', this.public );
 
 	var previousPlayerSeat = this.findPreviousPlayer();
+
 	if( previousPlayerSeat === this.public.activeSeat ) {
 		this.endPhase();
 	} else {
@@ -569,15 +574,18 @@ Table.prototype.playerRaised = function( amount ) {
 	var oldBiggestBet = this.public.biggestBet;
 	this.public.biggestBet = this.public.biggestBet < this.seats[this.public.activeSeat].public.bet ? this.seats[this.public.activeSeat].public.bet : this.public.biggestBet;
 	var raiseAmount = this.public.biggestBet - oldBiggestBet;
+
 	this.log({
 		message: this.seats[this.public.activeSeat].public.name + ' raised to ' + this.public.biggestBet,
 		action: 'raise',
 		seat: this.public.activeSeat,
 		notification: 'Raise ' + raiseAmount
 	});
+
 	this.emitEvent( 'table-data', this.public );
 
 	var previousPlayerSeat = this.findPreviousPlayer();
+
 	if( previousPlayerSeat === this.public.activeSeat ) {
 		this.endPhase();
 	} else {
@@ -771,6 +779,7 @@ Table.prototype.removeAllCardsFromPlay = function() {
 Table.prototype.endRound = function() {
 	// If there were any bets, they are added to the pot
 	this.pot.addTableBets( this.seats );
+
 	if( !this.pot.isEmpty() ) {
 		var winnersSeat = this.findNextPlayer( 0 );
 		this.pot.giveToWinner( this.seats[winnersSeat] );

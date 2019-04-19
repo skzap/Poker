@@ -5,7 +5,7 @@ var Pot = function() {
   // The pot may be split to several amounts, since not all players
   // have the same money on the table
   // Each portion of the pot has an amount and an array of the
-  // contributors (players who have betted in the pot and can
+  // contributors (players who have bet in the pot and can
   // win it in the showdown)
   this.pots = [
     { 
@@ -34,6 +34,7 @@ Pot.prototype.addTableBets = function( players ) {
 
   // The smallest bet of the round
   var smallestBet = 0;
+
   // Flag that shows if all the bets have the same amount
   var allBetsAreEqual = true;
 
@@ -103,6 +104,7 @@ Pot.prototype.addPlayersBets = function( player ) {
 
   this.pots[currentPot].amount += player.public.bet;
   player.public.bet = 0;
+
   // If the player is not in the list of contributors, add them
   if( !this.pots[currentPot].contributors.indexOf( player.seat ) ) {
     this.pots[currentPot].contributors.push( player.seat );
@@ -176,6 +178,7 @@ Pot.prototype.giveToWinner = function( winner ) {
   }
 
   this.reset();
+
   return winner.public.name + ' wins the pot (' + totalAmount + ')';
 }
 
@@ -185,8 +188,10 @@ Pot.prototype.giveToWinner = function( winner ) {
  */
 Pot.prototype.removePlayer = function( seat ) {
   var potsCount = this.pots.length;
+
   for( var i=0 ; i<potsCount ; i++ ) {
     var placeInArray = this.pots[i].contributors.indexOf( seat );
+
     if( placeInArray >= 0 ) {
       this.pots[i].contributors.splice( placeInArray, 1 );
     }
