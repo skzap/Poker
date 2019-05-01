@@ -28,7 +28,7 @@ var app = angular.module( 'app', ['ngRoute'] ).config( function( $routeProvider,
 
 app.filter('card', function() {
  return function(data) {
-  return (data || '').toUpperCase().replace('CARD-', '').replace('T', '10').replace('C', '♣').replace('H', '♥').replace('S', '♠').replace('D', '♦');
+  return (data || '').toUpperCase().replace('CARD-FACE-', '').replace('T', '10').replace('C', ' of clubs').replace('H', ' of hearts').replace('S', ' of spades').replace('D', ' of diamonds').replace('A', 'ace').replace('Q', 'queen').replace('J', 'jack');
  }
 });
 
