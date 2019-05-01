@@ -119,7 +119,7 @@ function( $scope, $rootScope, $http, $routeParams, $timeout, sounds ) {
 			return $scope.myCards[card];
 		}
 		else if ( typeof $scope.table.seats !== 'undefined' && typeof $scope.table.seats[seat] !== 'undefined' && $scope.table.seats[seat] && typeof $scope.table.seats[seat].cards !== 'undefined' && typeof $scope.table.seats[seat].cards[card] !== 'undefined' ) {
-			return 'card-' + $scope.table.seats[seat].cards[card];
+			return 'card-face-' + $scope.table.seats[seat].cards[card];
 		}
 		else {
 			return 'card-back';
@@ -306,8 +306,8 @@ function( $scope, $rootScope, $http, $routeParams, $timeout, sounds ) {
 
 	// When the player is dealt cards
 	socket.on( 'dealingCards', function( cards ) {
-		$scope.myCards[0] = 'card-'+cards[0];
-		$scope.myCards[1] = 'card-'+cards[1];
+		$scope.myCards[0] = 'card-face-'+cards[0];
+		$scope.myCards[1] = 'card-face-'+cards[1];
 		$scope.$digest();
 	});
 
