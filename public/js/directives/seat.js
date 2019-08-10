@@ -28,10 +28,23 @@ app.directive( 'seat', [function() {
 					return scope.myCards[card];
 				}
 				else if ( typeof scope.player !== 'undefined' && scope.player && scope.player.cards && scope.player.cards[card] ) {
-					return 'card-' + scope.player.cards[card];
+					return 'card-face-' + scope.player.cards[card];
 				}
 				else {
 					return 'card-back';
+				}
+			}
+
+			scope.getCardDescription = function( seat, card ) {
+				if( scope.mySeat === seat ) {
+					return (scope.myCards[card] || '').toUpperCase().replace('CARD-FACE-', '').replace('T', '10').replace('C', ' of clubs').replace('H', ' of hearts').replace('S', ' of spades').replace('D', ' of diamonds').replace('A', 'ace').replace('Q', 'queen').replace('J', 'jack');
+
+				}
+				else if ( typeof scope.player !== 'undefined' && scope.player && scope.player.cards && scope.player.cards[card] ) {
+					return (scope.player.cards[card] || '').toUpperCase().replace('CARD-', '').replace('T', '10').replace('C', '♣').replace('H', '♥').replace('S', '♠').replace('D', '♦');
+				}
+				else {
+					return '';
 				}
 			}
 

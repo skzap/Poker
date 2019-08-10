@@ -26,6 +26,12 @@ var app = angular.module( 'app', ['ngRoute'] ).config( function( $routeProvider,
 	$locationProvider.html5Mode(true).hashPrefix('!');
 });
 
+app.filter('card', function() {
+ return function(data) {
+  return (data || '').toUpperCase().replace('CARD-FACE-', '').replace('T', '10').replace('C', ' of clubs').replace('H', ' of hearts').replace('S', ' of spades').replace('D', ' of diamonds').replace('A', 'ace').replace('Q', 'queen').replace('J', 'jack');
+ }
+});
+
 app.run( function( $rootScope ) {
 	$rootScope.screenName = '';
 	$rootScope.totalChips = 0;

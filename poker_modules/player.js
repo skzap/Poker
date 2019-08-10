@@ -19,7 +19,7 @@ var Player = function( socket, name, chips ) {
 		hasCards: false,
         // The cards the player is holding, made public at the showdown
         cards: [],
-        // The amount the player has betted in the current round
+        // The amount the player has bet in the current round
         bet: 0
 	};
 	// The socket object of the user
@@ -95,9 +95,11 @@ Player.prototype.fold = function() {
  */
 Player.prototype.bet = function( amount ) {
     amount = parseInt(amount);
+
     if( amount > this.public.chipsInPlay ) {
         amount = this.public.chipsInPlay;
     }
+
     this.public.chipsInPlay -= amount;
     this.public.bet += +amount;
 }
@@ -108,9 +110,11 @@ Player.prototype.bet = function( amount ) {
  */
 Player.prototype.raise = function( amount ) {
     amount = parseInt(amount);
+
     if( amount > this.public.chipsInPlay ) {
         amount = this.public.chipsInPlay;
     }
+
     this.public.chipsInPlay -= amount;
     this.public.bet += +amount;
 }
